@@ -5,14 +5,18 @@ import Pagination from "../components/Pagination";
 import Footer from "../components/Footer";
 import { Link } from "react-router-dom";
 import axios from "axios";
+import { BASEURI } from "../urls";
 const defaultUrl = axios.getUri();
 
 function Users() {
   const [page, setPage] = useState(1);
-  const fetchUsers = (page = 1) =>
-    axios("/admin/users?page=" + page).then((res) => {
-      return res.data;
+  const fetchUsers = async (page = 1, searchQuery, userType) => {
+    return await fetch(
+      `${BASEURI}/admin/users?page=${page}&search=${searchQuery}&userType=${userType}`
+    ).then((res) => {
+      return res.json();
     });
+  };
   // useEffect(() => {
   //   fetch("http://localhost:5000/admin/users")
   //     .then((res) => {
@@ -26,17 +30,21 @@ function Users() {
   //       console.log(err.message);
   //     });
   // });
+  const [searchQuery, setSearchQuery] = useState("");
+  const [userType, setUserType] = useState("All");
   const {
     isLoading,
     isError,
     error,
     data: users,
-    isFetching,
     isPreviousData,
-  } = useQuery(["users", page], () => fetchUsers(page), {
-    keepPreviousData: true,
-  });
-  console.log(users);
+  } = useQuery(
+    ["users", page, searchQuery, userType],
+    () => fetchUsers(page, searchQuery, userType),
+    {
+      keepPreviousData: true,
+    }
+  );
   if (isLoading) {
     return <div>Loading....</div>;
   }
@@ -46,10 +54,10 @@ function Users() {
   const disableNextPagePagination = isPreviousData || !users?.hasMore;
   const validToGoNextPage = !isPreviousData && users.hasMore;
   return (
-    <div className="app">
+    <div style={{ marginTop: "10%" }}>
       <Header />
-      <div className="app-wrapper">
-        <div className="app-content pt-3 p-md-3 p-lg-4">
+      <div>
+        <div>
           <div className="container-xl">
             <div className="row g-3 mb-4 align-items-center justify-content-between">
               <div className="col-auto">
@@ -62,6 +70,10 @@ function Users() {
                       <form className="table-search-form row gx-1 align-items-center">
                         <div className="col-auto">
                           <input
+                            onChange={(e) =>
+                              setSearchQuery(e.currentTarget.value)
+                            }
+                            value={searchQuery}
                             type="text"
                             id="search-orders"
                             name="searchorders"
@@ -69,48 +81,19 @@ function Users() {
                             placeholder="Search"
                           />
                         </div>
-                        <div className="col-auto">
-                          <button
-                            type="submit"
-                            className="btn app-btn-secondary"
-                          >
-                            Search
-                          </button>
-                        </div>
                       </form>
                     </div>
                     <div className="col-auto">
                       <select
+                        onChange={(e) => setUserType(e.currentTarget.value)}
                         defaultChecked="option-1"
+                        value={userType}
                         className="form-select w-auto"
                       >
-                        <option value="option-1">All</option>
-                        <option value="option-2">This week</option>
-                        <option value="option-3">This month</option>
-                        <option value="option-4">Last 3 months</option>
+                        <option value="All">All</option>
+                        <option value="Admin">Admin</option>
+                        <option value="Customer">Customer</option>
                       </select>
-                    </div>
-                    <div className="col-auto">
-                      <a className="btn app-btn-secondary" href="#">
-                        <svg
-                          width="1em"
-                          height="1em"
-                          viewBox="0 0 16 16"
-                          className="bi bi-download me-1"
-                          fill="currentColor"
-                          xmlns="http://www.w3.org/2000/svg"
-                        >
-                          <path
-                            fillRule="evenodd"
-                            d="M.5 9.9a.5.5 0 0 1 .5.5v2.5a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1v-2.5a.5.5 0 0 1 1 0v2.5a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2v-2.5a.5.5 0 0 1 .5-.5z"
-                          />
-                          <path
-                            fillRule="evenodd"
-                            d="M7.646 11.854a.5.5 0 0 0 .708 0l3-3a.5.5 0 0 0-.708-.708L8.5 10.293V1.5a.5.5 0 0 0-1 0v8.793L5.354 8.146a.5.5 0 1 0-.708.708l3 3z"
-                          />
-                        </svg>
-                        Download CSV
-                      </a>
                     </div>
                   </div>
                 </div>
@@ -161,6 +144,7 @@ function Users() {
                                   <img
                                     style={{
                                       width: "50px",
+                                      borderRadius: "50%",
                                       height: "50px",
                                     }}
                                     crossOrigin="Anonymous"

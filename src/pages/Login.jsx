@@ -1,6 +1,35 @@
 import React from "react";
-
+import { useRef } from "react";
+import axios from "axios";
+import { BASEURI } from "./../urls";
+const defaultUrl = axios.getUri();
+import { useNavigate } from "react-router-dom";
 function Login() {
+  const navigate = useNavigate();
+  const userNameRef = useRef();
+  const passwordRef = useRef();
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    try {
+      const result = await (
+        await fetch(`${BASEURI}/auth/login`, {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            phoneNumber: userNameRef.current.value,
+            password: passwordRef.current.value,
+          }),
+        })
+      ).json();
+      navigate("/");
+      localStorage.setItem("token", result.token);
+    } catch (err) {
+      console.log(err.message);
+    }
+  };
+
   return (
     <div className="app app-login p-0">
       <div className="row g-0 app-auth-wrapper">
@@ -11,7 +40,8 @@ function Login() {
                 <a className="app-logo" href="index.html">
                   <img
                     className="logo-icon me-2"
-                    src="assets/images/app-logo.svg"
+                    style={{ width: 100, height: 100 }}
+                    src="assets/images/icon.png"
                     alt="logo"
                   />
                 </a>
@@ -20,17 +50,18 @@ function Login() {
                 Log in to Portal
               </h2>
               <div className="auth-form-container text-start">
-                <form className="auth-form login-form">
+                <form className="auth-form login-form" onSubmit={handleSubmit}>
                   <div className="email mb-3">
                     <label className="sr-only" htmlFor="signin-email">
                       Email
                     </label>
                     <input
-                      id="signin-email"
+                      ref={userNameRef}
+                      id="username"
                       name="signin-email"
-                      type="email"
+                      type="text"
                       className="form-control signin-email"
-                      placeholder="Email address"
+                      placeholder="phone Number"
                       required="required"
                     />
                   </div>
@@ -40,7 +71,8 @@ function Login() {
                       Password
                     </label>
                     <input
-                      id="signin-password"
+                      ref={passwordRef}
+                      id="password"
                       name="signin-password"
                       type="password"
                       className="form-control signin-password"
@@ -67,7 +99,7 @@ function Login() {
                       {/*//col-6*/}
                       <div className="col-6">
                         <div className="forgot-password text-end">
-                          <a href="reset-password.html">Forgot password?</a>
+                          <a href="/reset-password">Forgot password?</a>
                         </div>
                       </div>
                       {/*//col-6*/}
@@ -78,71 +110,26 @@ function Login() {
                   <div className="text-center">
                     <button
                       type="submit"
+                      style={{
+                        backgroundColor: "#0244d0",
+                      }}
                       className="btn app-btn-primary w-100 theme-btn mx-auto"
                     >
                       Log In
                     </button>
                   </div>
                 </form>
-                <div className="auth-option text-center pt-5">
-                  No Account? Sign up{" "}
-                  <a className="text-link" href="signup.html">
-                    here
-                  </a>
-                  .
-                </div>
               </div>
               {/*//auth-form-container*/}
             </div>
             {/*//auth-body*/}
-            <footer className="app-auth-footer">
-              <div className="container text-center py-3">
-                {/*/* This template is free as long as you keep the footer attribution link. If you'd like to use the template without the attribution link, you can buy the commercial license via our website: themes.3rdwavemedia.com Thank you for your support. :) * /*/}
-                <small className="copyright">
-                  Designed with <span className="sr-only">love</span>
-                  <i
-                    className="fas fa-heart"
-                    style={{ color: "#fb866a" }}
-                  /> by{" "}
-                  <a
-                    className="app-link"
-                    href="http://themes.3rdwavemedia.com"
-                    target="_blank"
-                  >
-                    Xiaoying Riley
-                  </a>{" "}
-                  for developers
-                </small>
-              </div>
-            </footer>
+
             {/*//app-auth-footer*/}
           </div>
           {/*//flex-column*/}
         </div>
         {/*//auth-main-col*/}
-        <div className="col-12 col-md-5 col-lg-6 h-100 auth-background-col">
-          <div className="auth-background-holder"></div>
-          <div className="auth-background-mask" />
-          <div className="auth-background-overlay p-3 p-lg-5">
-            <div className="d-flex flex-column align-content-end h-100">
-              <div className="h-100" />
-              <div className="overlay-content p-3 p-lg-4 rounded">
-                <h5 className="mb-3 overlay-title">
-                  Explore Portal Admin Template
-                </h5>
-                <div>
-                  Portal is a free Bootstrap 5 admin dashboard template. You can
-                  download and view the template license{" "}
-                  <a href="https://themes.3rdwavemedia.com/bootstrap-templates/admin-dashboard/portal-free-bootstrap-admin-dashboard-template-for-developers/">
-                    here
-                  </a>
-                  .
-                </div>
-              </div>
-            </div>
-          </div>
-          {/*//auth-background-overlay*/}
-        </div>
+
         {/*//auth-background-col*/}
       </div>
       {/*//row*/}

@@ -40,10 +40,13 @@ function Pagination({
             3
           </a>
         </li> */}
-        <li className="page-item">
+        <li
+          className={`page-item ${disableNextPagePagination ? "disabled" : ""}`}
+        >
           <button
-            // disabled={disableNextPagePagination}
+            disabled={disableNextPagePagination}
             onClick={() => {
+              console.log(disableNextPagePagination);
               //   if (validToGoNextPage) {
               // }
               setPage((old) => old + 1);

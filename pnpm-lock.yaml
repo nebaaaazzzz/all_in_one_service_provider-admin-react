@@ -8,6 +8,7 @@ specifiers:
   axios: ^0.27.2
   react: ^18.2.0
   react-dom: ^18.2.0
+  react-moment: ^1.1.2
   react-router-dom: ^6.3.0
   vite: ^3.0.0
 
@@ -16,6 +17,7 @@ dependencies:
   axios: 0.27.2
   react: 18.2.0
   react-dom: 18.2.0_react@18.2.0
+  react-moment: 1.1.2_react@18.2.0
   react-router-dom: 6.3.0_biqbaboplfbrettd7655fr4n2y
 
 devDependencies:
@@ -870,6 +872,16 @@ packages:
       loose-envify: 1.4.0
       react: 18.2.0
       scheduler: 0.23.0
+    dev: false
+
+  /react-moment/1.1.2_react@18.2.0:
+    resolution: {integrity: sha512-lfb+shYXI2tXlQrNUpNr05/1D/kzFj8Isbfp89DQrpZk0fs2JIAnLHWETR0hQS9zvtzwLWlVv0wKLffbue5HoA==}
+    peerDependencies:
+      moment: ^2.29.0
+      prop-types: ^15.7.0
+      react: ^16.0 || ^17.0.0 || ^18.0.0
+    dependencies:
+      react: 18.2.0
     dev: false
 
   /react-refresh/0.14.0:

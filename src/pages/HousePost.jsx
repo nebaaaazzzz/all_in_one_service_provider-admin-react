@@ -20,9 +20,8 @@ function HousePost() {
   const { isLoading, isError, data, error } = useQuery(["house", id], () =>
     fetchHouse(id)
   );
-  const postApprovalState = ["pending", "approved", "rejected"][
-    data.isApproved
-  ];
+
+  const postApprovalState = ["pending", "approved", "rejected"];
   const approveMutation = useMutation(() => {
     // return axios.post(`/admin/house/approve/${data._id}`);
     return axios.patch(`/admin/house/approve/${data._id}`);
@@ -56,7 +55,7 @@ function HousePost() {
   return (
     <div>
       <Header />
-      <div>
+      <div style={{ paddingLeft: "20%" }}>
         <div>
           <div>
             <h1 className="app-page-title">House</h1>
@@ -72,7 +71,7 @@ function HousePost() {
                           <div>
                             <strong>Photo</strong>
                             <strong style={{ margin: 30 }}>
-                              {postApprovalState}
+                              {postApprovalState[data.isApproved]}
                             </strong>
                           </div>
                         </div>
@@ -374,9 +373,9 @@ function HousePost() {
                       <div>
                         <p style={{ fontSize: 16 }}>
                           Type :{"  "}
-                          <p style={{ color: "rgba(0,0,0,0.6)" }}>
+                          <span style={{ color: "rgba(0,0,0,0.6)" }}>
                             {data.placeDescription.title}
-                          </p>
+                          </span>
                         </p>
                         <p style={{ fontSize: 16 }}>
                           Description :{" "}
