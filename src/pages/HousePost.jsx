@@ -128,35 +128,32 @@ function HousePost() {
                     >
                       <div
                         style={{
-                          padding: 10,
+                          padding: 5,
                           borderRadius: 5,
-                          backgroundColor: "#0244d0",
                         }}
                       >
                         <div>{data?.applicants?.length || 0} </div>
-                        <p style={{ color: "#fff" }}>Applicants</p>
+                        <p style={{}}>Applicants</p>
                       </div>
                       <div
                         style={{
-                          padding: 10,
+                          padding: 5,
 
                           borderRadius: 5,
-                          backgroundColor: "#0244d0",
                         }}
                       >
                         <div>{data?.approved?.length || 0} </div>
-                        <p style={{ color: "#fff" }}>Approved</p>
+                        <p style={{}}>Approved</p>
                       </div>
                       <div
                         style={{
-                          padding: 10,
+                          padding: 5,
 
                           borderRadius: 5,
-                          backgroundColor: "#0244d0",
                         }}
                       >
                         <div>{data?.rejected?.length || 0} </div>
-                        <p style={{ color: "#fff" }}>Rejected</p>
+                        <p style={{}}>Rejected</p>
                       </div>
                     </div>
                     <p

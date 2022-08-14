@@ -8,7 +8,7 @@ const fetchJob = (id) =>
   axios(`/admin/job/post/${id}`).then((res) => {
     return res.data;
   });
-function JobPost() {
+function data() {
   const queryClient = useQueryClient();
   const { id } = useParams();
   // const suspendmutation = useMutation(() => {
@@ -20,7 +20,6 @@ function JobPost() {
   const { isLoading, isError, data, error } = useQuery(["job", id], () =>
     fetchJob(id)
   );
-  console.log(data);
   const postApprovalState = ["pending", "approved", "rejected"];
   const approveMutation = useMutation(() => {
     // return axios.post(`/admin/house/approve/${data._id}`);
@@ -101,35 +100,32 @@ function JobPost() {
                     >
                       <div
                         style={{
-                          padding: 10,
+                          padding: 5,
                           borderRadius: 5,
-                          backgroundColor: "#0244d0",
                         }}
                       >
                         <div>{data?.applicants?.length || 0} </div>
-                        <p style={{ color: "#fff" }}>Applicants</p>
+                        <p style={{}}>Applicants</p>
                       </div>
                       <div
                         style={{
-                          padding: 10,
+                          padding: 5,
 
                           borderRadius: 5,
-                          backgroundColor: "#0244d0",
                         }}
                       >
                         <div>{data?.approved?.length || 0} </div>
-                        <p style={{ color: "#fff" }}>Approved</p>
+                        <p style={{}}>Approved</p>
                       </div>
                       <div
                         style={{
-                          padding: 10,
+                          padding: 5,
 
                           borderRadius: 5,
-                          backgroundColor: "#0244d0",
                         }}
                       >
                         <div>{data?.rejected?.length || 0} </div>
-                        <p style={{ color: "#fff" }}>Rejected</p>
+                        <p style={{}}>Rejected</p>
                       </div>
                     </div>
                     <p
@@ -195,8 +191,8 @@ function JobPost() {
                         </div>
                       </div>
                     ) : (
-                      <View>
-                        <Text
+                      <div>
+                        <p
                           style={{
                             fontWeight: "bold",
                             fontSize: 17,
@@ -204,13 +200,13 @@ function JobPost() {
                           }}
                         >
                           Salary
-                        </Text>
-                        <View style={{ flexDirection: "row" }}>
-                          <Text style={{ fontSize: 16, marginLeft: "5%" }}>
-                            {jobPost.paymentStyle}
-                          </Text>
-                        </View>
-                      </View>
+                        </p>
+                        <div style={{ flexDirection: "row" }}>
+                          <p style={{ fontSize: 16, marginLeft: "5%" }}>
+                            {data.paymentStyle}
+                          </p>
+                        </div>
+                      </div>
                     )}
                     {data.document ? (
                       <a
@@ -368,4 +364,4 @@ function timeAgo(dateParam) {
 
   return getFormattedDate(date); // 10. January 2017. at 10:20
 }
-export default JobPost;
+export default data;

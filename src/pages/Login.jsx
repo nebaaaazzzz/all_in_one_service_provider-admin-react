@@ -1,30 +1,44 @@
-import React from "react";
-import { useRef } from "react";
+import React, { useRef, useContext, useState } from "react";
+import {} from "react";
 import axios from "axios";
 import { BASEURI } from "./../urls";
 const defaultUrl = axios.getUri();
 import { useNavigate } from "react-router-dom";
+import { UserContext } from "./../App";
 function Login() {
+  const { setData } = useContext(UserContext);
   const navigate = useNavigate();
   const userNameRef = useRef();
   const passwordRef = useRef();
+  const [errMsg, setErrMsg] = useState();
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      const result = await (
-        await fetch(`${BASEURI}/auth/login`, {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify({
-            phoneNumber: userNameRef.current.value,
-            password: passwordRef.current.value,
-          }),
-        })
-      ).json();
-      navigate("/");
-      localStorage.setItem("token", result.token);
+      const response = await fetch(`${BASEURI}/auth/login`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          phoneNumber: userNameRef.current.value,
+          password: passwordRef.current.value,
+        }),
+      });
+      if (response.ok) {
+        const token = (await response.json()).token;
+        const user = await (
+          await fetch(`${BASEURI}/me`, {
+            headers: {
+              Authorization: `Bearer ${token}`,
+            },
+          })
+        ).json();
+        setData(user);
+        navigate("/");
+        localStorage.setItem("token", token);
+      } else {
+        setErrMsg(await response.json());
+      }
     } catch (err) {
       console.log(err.message);
     }

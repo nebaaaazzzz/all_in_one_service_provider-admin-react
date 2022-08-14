@@ -14,13 +14,23 @@ function User() {
   const suspendmutation = useMutation(() => {
     return axios.patch(`/admin/user/${id}/suspend`);
   });
+
   const unsuspendmutation = useMutation(() => {
+    axios.post;
     return axios.patch(`/admin/user/${id}/unsuspend`);
+  });
+  const updatemutation = useMutation(() => {
+    return axios.patch(`/admin/left-update/${id}/`);
   });
   const { isLoading, isError, data, error } = useQuery(["user", id], () =>
     fetchUser(id)
   );
-  if (isLoading || suspendmutation.isLoading || unsuspendmutation.isLoading) {
+  if (
+    isLoading ||
+    suspendmutation.isLoading ||
+    unsuspendmutation.isLoading ||
+    updatemutation.isLoading
+  ) {
     return <div>Loaing ....</div>;
   }
   if (isError) {
@@ -35,8 +45,7 @@ function User() {
       <Header />
       <div>
         <div>
-          <div>
-            <h1 className="app-page-title">My Account</h1>
+          <div style={{ marginTop: "30%" }}>
             <div className="row gy-4">
               <div>
                 <div>
@@ -80,6 +89,11 @@ function User() {
                             <img
                               className="profile-image"
                               crossOrigin="anonymous"
+                              style={{
+                                borderRaduis: "50%",
+                                width: 150,
+                                height: 150,
+                              }}
                               src={`${defaultUrl}/profile-pic/${data.profilePic}`}
                               alt=""
                             />
@@ -101,11 +115,63 @@ function User() {
                       <div className="row justify-content-between align-items-center">
                         <div className="col-auto">
                           <div className="item-label">
+                            <strong>Remaning</strong> {data.left}
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                    {data.orderId ? (
+                      <div className="item border-bottom py-3">
+                        <div className="row justify-content-between align-items-center">
+                          <div className="col-auto">
+                            <div className="item-label">
+                              <strong>OrderId</strong> {data.orderId}
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    ) : (
+                      <></>
+                    )}
+                    <div className="item border-bottom py-3">
+                      <div className="row justify-content-between align-items-center">
+                        <div className="col-auto">
+                          <div className="item-label">
                             <strong>Name</strong>
                           </div>
                           <div className="item-data">
                             {data.firstName} {data.lastName}
                           </div>
+                        </div>
+                      </div>
+                    </div>
+                    <div className="item border-bottom py-3">
+                      <div className="row justify-content-between align-items-center">
+                        <div className="col-auto">
+                          <div className="item-label">
+                            <strong>Gender</strong>
+                          </div>
+                          <div className="item-data">{data.gender}</div>
+                        </div>
+                      </div>
+                    </div>
+                    <div className="item border-bottom py-3">
+                      <div className="row justify-content-between align-items-center">
+                        <div className="col-auto">
+                          <div className="item-label">
+                            <strong>Description</strong>
+                          </div>
+                          <div className="item-data">{data.description}</div>
+                        </div>
+                      </div>
+                    </div>
+                    <div className="item border-bottom py-3">
+                      <div className="row justify-content-between align-items-center">
+                        <div className="col-auto">
+                          <div className="item-label">
+                            <strong>PhoneNumber</strong>
+                          </div>
+                          <div className="item-data">{data.description}</div>
                         </div>
                       </div>
                     </div>
@@ -143,6 +209,108 @@ function User() {
                         {/*//row*/}
                       </div>
                     ) : null}
+                    {data.cv ? (
+                      <div
+                        style={{
+                          backgroundColor: "#0244d0",
+                          paddingVertical: 5,
+                          paddingHorizontal: 5,
+                          borderRadius: 5,
+                        }}
+                      >
+                        <a
+                          href={`${BASEURI}/cv/{data.cv}`}
+                          download
+                          style={{
+                            textAlign: "center",
+                            paddingVertical: 5,
+                            fontSize: 16,
+                            color: "#fff",
+                          }}
+                        >
+                          open cv
+                        </a>
+                      </div>
+                    ) : (
+                      <></>
+                    )}
+                    {data.education.length ? (
+                      <div>
+                        <p style={{ fontWeight: "bold" }}>Education</p>
+                        {data.education.map((item, index) => {
+                          return (
+                            <div key={index + 1}>
+                              <p style={{ borderWidth: 0.25 }} />
+                              <p>{item.institution}</p>
+                              <div
+                                style={{
+                                  flexDirection: "row",
+                                  justifyContent: "space-between",
+                                }}
+                              >
+                                <div style={{ flexDirection: "row" }}>
+                                  <p>
+                                    {new Date(item.start).getMonth() +
+                                      "/" +
+                                      new Date(item.start).getFullYear()}
+                                    -
+                                  </p>
+                                  <p>
+                                    {new Date(item.to).getMonth() +
+                                      "/" +
+                                      new Date(item.to).getFullYear()}
+                                  </p>
+                                </div>
+                              </div>
+                              <div style={{ flexDirection: "row" }}>
+                                <p>
+                                  {item.major} {"    "}
+                                </p>
+                                <p>{item.degree}</p>
+                              </div>
+                            </div>
+                          );
+                        })}
+                      </div>
+                    ) : (
+                      <></>
+                    )}
+                    {data.languages.length ? (
+                      <div style={{ marginVertical: 15 }}>
+                        <p style={{ fontWeight: "bold" }}>Languages</p>
+                        <p />
+                        <div style={{ paddingVertical: 10 }}>
+                          {data.languages.map((item, index) => {
+                            return (
+                              <div
+                                key={index + 1}
+                                style={{
+                                  paddingVertical: 5,
+                                  flexDirection: "row",
+                                  alignItems: "center",
+                                  justifyContent: "space-around",
+                                }}
+                              >
+                                <div
+                                  style={{
+                                    paddingRight: "10%",
+                                    flex: 1,
+                                    alignItems: "center",
+                                    justifyContent: "space-between",
+                                    flexDirection: "row",
+                                  }}
+                                >
+                                  <p>{item.language}</p>
+                                  <p>{item.level}</p>
+                                </div>
+                              </div>
+                            );
+                          })}
+                        </div>
+                      </div>
+                    ) : (
+                      <></>
+                    )}
 
                     {/*//item*/}
                     <div className="item border-bottom py-3">
@@ -151,14 +319,11 @@ function User() {
                           <div className="item-label">
                             <strong>Location</strong>
                           </div>
-                          <div className="item-data">New York</div>
+                          <div className="item-data">{data.city}</div>
+                          <span className="item-data">{data.region}</span>
                         </div>
                         {/*//col*/}
-                        <div className="col text-end">
-                          <a className="btn-sm app-btn-secondary" href="#">
-                            Change
-                          </a>
-                        </div>
+
                         {/*//col*/}
                       </div>
                       {/*//row*/}
@@ -189,6 +354,11 @@ function User() {
                         suspend
                       </button>
                     )}
+                  </div>
+                  <div>
+                    <button onClick={() => updatemutation.mutate()}>
+                      Update Remaning
+                    </button>
                   </div>
                   {/*//app-card-footer*/}
                 </div>

@@ -7,12 +7,14 @@ import { Link } from "react-router-dom";
 import axios from "axios";
 import { BASEURI } from "../urls";
 const defaultUrl = axios.getUri();
-
+import { UserContext } from "./../App";
+import { useContext } from "react";
 function Users() {
+  const user = useContext(UserContext).data;
   const [page, setPage] = useState(1);
   const fetchUsers = async (page = 1, searchQuery, userType) => {
     return await fetch(
-      `${BASEURI}/admin/users?page=${page}&search=${searchQuery}&userType=${userType}`
+      `${BASEURI}/admin/users?page=${page}&search=${searchQuery}&userType=${userType}&id=${user._id}`
     ).then((res) => {
       return res.json();
     });

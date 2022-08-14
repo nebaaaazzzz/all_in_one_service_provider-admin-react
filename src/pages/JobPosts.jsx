@@ -7,6 +7,7 @@ import Pagination from "../components/Pagination";
 import Header from "../components/Header";
 import Option from "../components/Option";
 import { Link } from "react-router-dom";
+import moment from "moment";
 function Posts() {
   const [page, setPage] = React.useState(1);
   const fetchPosts = (page = 0) =>
@@ -47,7 +48,7 @@ function Posts() {
     <div>
       {/*//app-header*/}
       <Header />
-      <div>
+      <div style={{ marginTop: "5%" }}>
         <div>
           <div>
             <div>
@@ -68,23 +69,27 @@ function Posts() {
               {jobs.map((job) => {
                 return (
                   <Link to={`/job/post/${job._id}`}>
-                    <div>
-                      <div
-                        className="app-card app-card shadow-sm"
-                        style={{ backgroundColor: "rgba(0,0,0,0.1)" }}
-                      >
+                    <div
+                      style={{
+                        borderWidth: 1,
+                        borderColor: "rgba(0,0,0,0.5)",
+                        margin: 20,
+                        borderStyle: "solid",
+                      }}
+                    >
+                      <div className="app-card app-card shadow-sm">
                         <div className="app-card-thumb-holder p-3">
-                          <h3>{job.title}</h3>
+                          <h4>{job.title}</h4>
                         </div>
                         <div className="app-card-body p-3 has-card-actions">
-                          <h4 className="app-doc-title truncate mb-0">
+                          <h5 className="app-doc-title truncate mb-0">
                             <a href="#file-link">{job.placeName}</a>
-                          </h4>
+                          </h5>
                           <div className="app-doc-meta">
                             <ul className="list-unstyled mb-0">
                               <li>
-                                <span className="text-muted">Uploaded:</span> 3
-                                mins ago
+                                <span className="text-muted">Uploaded:</span>{" "}
+                                {moment(job.createdAt).fromNow()}
                               </li>
                             </ul>
                           </div>

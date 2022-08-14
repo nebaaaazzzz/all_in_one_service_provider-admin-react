@@ -46,7 +46,6 @@ function Pagination({
           <button
             disabled={disableNextPagePagination}
             onClick={() => {
-              console.log(disableNextPagePagination);
               //   if (validToGoNextPage) {
               // }
               setPage((old) => old + 1);

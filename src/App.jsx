@@ -15,9 +15,10 @@ import HousePosts from "./pages/HousePosts";
 import JobPost from "./pages/JobPost";
 import JobPosts from "./pages/JobPosts";
 import Account from "./pages/Account";
-import NotFound from "./pages/Notfound";
 import Signup from "./pages/Signup";
+import NotFound from "./pages/Notfound";
 import ResetPassword from "./pages/ResetPassword";
+import AddAdmin from "./pages/AddAdmin";
 import React, { useState, useEffect } from "react";
 import axios from "axios";
 import { useQuery } from "@tanstack/react-query";
@@ -36,8 +37,15 @@ function App() {
             Authorization: `Bearer ${token}`,
           },
         });
+        if (response.ok) {
+          setIsLoading(false);
+          setData(await response.json());
+        } else {
+          setIsLoading(false);
+        }
+      }
+      {
         setIsLoading(false);
-        setData(await response.json());
       }
     })();
   }, []);
@@ -47,35 +55,39 @@ function App() {
   return (
     <BrowserRouter>
       {data ? (
-        <UserContext.Provider value={{ data }}>
+        <UserContext.Provider value={{ data, setData }}>
           <Routes>
             <Route path="/" element={<Start />} />
             <Route path="charts" element={<Charts />} />
             <Route path="help" element={<Help />} />
             <Route path="feedback" element={<Feedback />} />
+            <Route path="feedback/user/:id" element={<User />} />
             <Route path="job/posts" element={<JobPosts />} />
             <Route path="job/post/:id" element={<JobPost />} />
             <Route path="house/posts" element={<HousePosts />} />
             <Route path="house/post/:id" element={<HousePost />} />
             <Route path="users" element={<Users />} />
             <Route path="user/:id" element={<User />} />
-
+            <Route path="account" element={<Account />} />
+            <Route path="add-user" element={<AddAdmin />} />
+            <Route path="*" element={<NotFound />} />
             {/*
       <Route path="orders" element={<Orders />} />
       <Route path="*">{() => <div>not found</div>}</Route>
       
-      <Route path="account" element={<Account />} /> */}
+       */}
             {/* <Route path="*" exact={true} element={<NotFound />} /> */}
           </Routes>{" "}
         </UserContext.Provider>
       ) : (
-        <>
+        <UserContext.Provider value={{ setData }}>
           <Routes>
+            <Route path="/" element={<Login />} />
             <Route path="rest-password" element={<ResetPassword />} />
             <Route path="login" element={<Login />} />
             <Route path="signup" element={<Signup />} />
           </Routes>
-        </>
+        </UserContext.Provider>
       )}
     </BrowserRouter>
   );

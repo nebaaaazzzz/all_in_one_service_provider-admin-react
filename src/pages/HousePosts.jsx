@@ -9,6 +9,7 @@ import Option from "../components/Option";
 import { Link } from "react-router-dom";
 import { BASEURI } from "../urls";
 import { useEffect } from "react";
+import moment from "moment";
 function HousePosts() {
   const [page, setPage] = React.useState(1);
   const fetchPosts = async (page = 0) =>
@@ -30,15 +31,7 @@ function HousePosts() {
       keepPreviousData: true,
     }
   );
-  useEffect(() => {
-    (async () => {
-      console.log(
-        await fetch("http://localhost:5000/admin/house/posts").then((res) => {
-          return res.json();
-        })
-      );
-    })();
-  }, []);
+
   // const disableNextPagePagination = isPreviousData || !users?.hasMore;
   // const validToGoNextPage = !isPreviousData && users.hasMore;
   const disableNextPagePagination = false,
@@ -68,15 +61,22 @@ function HousePosts() {
               </div>
             </div>
             {/*//row*/}
-            <div>
+            <div
+              style={{
+                display: "flex",
+                marginLeft: "20%",
+                marginTop: "5%",
+                flexWrap: "wrap",
+              }}
+            >
               {houses.map((house, index) => {
-                if (index == 1) {
-                  console.log(house);
-                }
                 return (
                   <div
                     className="col-6 col-md-4 col-xl-3 col-xxl-2"
                     key={index + 1}
+                    style={{
+                      margin: "20px 20px",
+                    }}
                   >
                     <Link to={`/house/post/${house._id}`}>
                       <div className="app-card shadow-sm">
@@ -105,8 +105,8 @@ function HousePosts() {
                                 {house.price}
                               </li>
                               <li>
-                                <span className="text-muted">Posted:</span> 3
-                                weeks ago
+                                <span className="text-muted">Posted:</span>{" "}
+                                {moment(house.createdAt).fromNow()}
                               </li>
                             </ul>
                           </div>

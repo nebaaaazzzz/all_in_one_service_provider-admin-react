@@ -4,6 +4,7 @@ import { useInfiniteQuery } from "@tanstack/react-query";
 import axios from "axios";
 import { Link } from "react-router-dom";
 import { BASEURI } from "../urls";
+import moment from "moment";
 const defaultUrl = axios.getUri();
 const FeedbackComponent = ({ feedbacks }) => {
   return (
@@ -28,7 +29,10 @@ const FeedbackComponent = ({ feedbacks }) => {
                 alignItems: "center",
               }}
             >
-              <Link to={`/user/${feedback.user._id}`} style={{ margin: 10 }}>
+              <Link
+                to={`/feedback/user/${feedback.user._id}`}
+                style={{ margin: 10 }}
+              >
                 <img
                   style={{
                     borderRadius: "50%",
@@ -42,12 +46,14 @@ const FeedbackComponent = ({ feedbacks }) => {
               </Link>
               <ul className="notification-meta list-inline">
                 <li className="list-inline-item">
-                  <Link to={`/user/${feedback.user._id}`}>
+                  <Link to={`/feedback/user/${feedback.user._id}`}>
                     {feedback.user.firstName} {feedback.user.lastName}
                   </Link>
                 </li>
                 <li className="list-inline-item">|</li>
-                <li className="list-inline-item">2 hrs ago</li>
+                <li className="list-inline-item">
+                  {moment(feedback.createdAt).fromNow()}
+                </li>
               </ul>
             </div>
             <div className="app-card-body ">
@@ -80,19 +86,7 @@ function Feedback() {
         return res.data;
       }
     );
-  // useEffect(() => {
-  //   fetch("http://localhost:5000/admin/users")
-  //     .then((res) => {
-  //       console.log(res.ok);
-  //       return res.json();
-  //     })
-  //     .then((e) => {
-  //       console.log(e);
-  //     })
-  //     .catch((err) => {
-  //       console.log(err.message);
-  //     });
-  // });
+
   const [selected, setSelected] = useState("Feedback");
   const {
     data,
