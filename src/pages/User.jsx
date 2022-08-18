@@ -3,6 +3,7 @@ import React from "react";
 import { useParams } from "react-router-dom";
 import Header from "../components/Header";
 import axios from "axios";
+import { BASEURI } from "../urls";
 const defaultUrl = axios.getUri();
 const fetchUser = (id) =>
   axios(`/admin/user/${id}`).then((res) => {
@@ -115,7 +116,37 @@ function User() {
                       <div className="row justify-content-between align-items-center">
                         <div className="col-auto">
                           <div className="item-label">
-                            <strong>Remaning</strong> {data.left}
+                            <strong style={{ marginLeft: 10 }}>Remaning</strong>{" "}
+                            {data.left}
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                    <div className="item border-bottom py-3">
+                      <div className="row justify-content-between align-items-center">
+                        <div className="col-auto">
+                          <div className="item-label">
+                            <strong style={{ marginLeft: 10 }}>Gender</strong>{" "}
+                            {data.gender}
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                    <div className="item border-bottom py-3">
+                      <div className="row justify-content-between align-items-center">
+                        <div className="col-auto">
+                          <div className="item-label">
+                            <strong>Name</strong>{" "}
+                            {data.firstName + " " + data.lastName}
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                    <div className="item border-bottom py-3">
+                      <div className="row justify-content-between align-items-center">
+                        <div className="col-auto">
+                          <div className="item-label">
+                            <strong>Phone</strong> {data.phoneNumber}
                           </div>
                         </div>
                       </div>
@@ -133,43 +164,12 @@ function User() {
                     ) : (
                       <></>
                     )}
-                    <div className="item border-bottom py-3">
-                      <div className="row justify-content-between align-items-center">
-                        <div className="col-auto">
-                          <div className="item-label">
-                            <strong>Name</strong>
-                          </div>
-                          <div className="item-data">
-                            {data.firstName} {data.lastName}
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-                    <div className="item border-bottom py-3">
-                      <div className="row justify-content-between align-items-center">
-                        <div className="col-auto">
-                          <div className="item-label">
-                            <strong>Gender</strong>
-                          </div>
-                          <div className="item-data">{data.gender}</div>
-                        </div>
-                      </div>
-                    </div>
+
                     <div className="item border-bottom py-3">
                       <div className="row justify-content-between align-items-center">
                         <div className="col-auto">
                           <div className="item-label">
                             <strong>Description</strong>
-                          </div>
-                          <div className="item-data">{data.description}</div>
-                        </div>
-                      </div>
-                    </div>
-                    <div className="item border-bottom py-3">
-                      <div className="row justify-content-between align-items-center">
-                        <div className="col-auto">
-                          <div className="item-label">
-                            <strong>PhoneNumber</strong>
                           </div>
                           <div className="item-data">{data.description}</div>
                         </div>
@@ -219,8 +219,9 @@ function User() {
                         }}
                       >
                         <a
-                          href={`${BASEURI}/cv/{data.cv}`}
+                          href={`${BASEURI}/cv/${data.cv}`}
                           download
+                          target={"_blank"}
                           style={{
                             textAlign: "center",
                             paddingVertical: 5,
@@ -235,13 +236,16 @@ function User() {
                       <></>
                     )}
                     {data.education.length ? (
-                      <div>
+                      <div style={{ marginTop: "10%" }}>
                         <p style={{ fontWeight: "bold" }}>Education</p>
                         {data.education.map((item, index) => {
                           return (
-                            <div key={index + 1}>
+                            <div
+                              key={index + 1}
+                              style={{ display: "flex", gap: 10 }}
+                            >
                               <p style={{ borderWidth: 0.25 }} />
-                              <p>{item.institution}</p>
+                              <span>{item.institution}</span>
                               <div
                                 style={{
                                   flexDirection: "row",
@@ -249,17 +253,17 @@ function User() {
                                 }}
                               >
                                 <div style={{ flexDirection: "row" }}>
-                                  <p>
+                                  <span>
                                     {new Date(item.start).getMonth() +
                                       "/" +
                                       new Date(item.start).getFullYear()}
                                     -
-                                  </p>
-                                  <p>
+                                  </span>
+                                  <span>
                                     {new Date(item.to).getMonth() +
                                       "/" +
                                       new Date(item.to).getFullYear()}
-                                  </p>
+                                  </span>
                                 </div>
                               </div>
                               <div style={{ flexDirection: "row" }}>
@@ -300,8 +304,10 @@ function User() {
                                     flexDirection: "row",
                                   }}
                                 >
-                                  <p>{item.language}</p>
-                                  <p>{item.level}</p>
+                                  <span style={{ marginRight: "10%" }}>
+                                    {item.language}
+                                  </span>
+                                  <span>{item.level}</span>
                                 </div>
                               </div>
                             );
@@ -313,21 +319,18 @@ function User() {
                     )}
 
                     {/*//item*/}
+                    {/*//item*/}
                     <div className="item border-bottom py-3">
                       <div className="row justify-content-between align-items-center">
                         <div className="col-auto">
                           <div className="item-label">
-                            <strong>Location</strong>
+                            <strong>Location</strong> {data?.city}{" "}
+                            {data?.region}
                           </div>
-                          <div className="item-data">{data.city}</div>
-                          <span className="item-data">{data.region}</span>
                         </div>
-                        {/*//col*/}
-
-                        {/*//col*/}
                       </div>
-                      {/*//row*/}
                     </div>
+
                     {/*//item*/}
                   </div>
                   {/*//app-card-body*/}

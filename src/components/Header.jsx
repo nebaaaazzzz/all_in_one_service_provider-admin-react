@@ -15,7 +15,7 @@ function Header() {
     setData("");
     navigate("/login", { replace: true });
   }
-  const paths = ["user", "add", "feedback", "post"];
+  const paths = ["add", "user", "feedback", "post"];
   const index = paths.findIndex((path) => {
     return location.pathname.includes(path);
   });
@@ -173,7 +173,7 @@ function Header() {
                 {/*//Bootstrap Icons: https://icons.getbootstrap.com/ */}
                 <Link
                   to="/users"
-                  className={`nav-link ${index == 0 ? "active" : ""}`}
+                  className={`nav-link ${index == 1 ? "active" : ""}`}
                 >
                   <span className="nav-icon">
                     <svg
@@ -205,7 +205,7 @@ function Header() {
                 {/*//Bootstrap Icons: https://icons.getbootstrap.com/ */}
                 <Link
                   to="/add-user"
-                  className={`nav-link ${index == 1 ? "active" : ""}`}
+                  className={`nav-link ${index == 0 ? "active" : ""}`}
                 >
                   <span className="nav-icon">
                     <svg
@@ -229,7 +229,7 @@ function Header() {
                       <circle cx="3.5" cy="10.5" r=".5" />
                     </svg>
                   </span>
-                  <span className="nav-link-text">Add User</span>{" "}
+                  <span className="nav-link-text">Add Admin</span>{" "}
                 </Link>
                 {/*//nav-link*/}
               </li>
@@ -269,11 +269,13 @@ function Header() {
               <li className="nav-item has-submenu">
                 {/*//Bootstrap Icons: https://icons.getbootstrap.com/ */}
                 <a
-                  className="nav-link submenu-toggle"
+                  className={`nav-link submenu-toggle${
+                    index == 3 ? "active" : ""
+                  }`}
                   href="#"
                   data-bs-toggle="collapse"
                   data-bs-target="#submenu-1"
-                  aria-expanded="false"
+                  aria-expanded="true"
                   aria-controls="submenu-1"
                 >
                   <span className="nav-icon">

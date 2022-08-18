@@ -14,7 +14,7 @@ function Login() {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      const response = await fetch(`${BASEURI}/auth/login`, {
+      const response = await fetch(`${BASEURI}/auth/adminlogin`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -37,7 +37,7 @@ function Login() {
         navigate("/");
         localStorage.setItem("token", token);
       } else {
-        setErrMsg(await response.json());
+        setErrMsg((await response.json()).message);
       }
     } catch (err) {
       console.log(err.message);
@@ -64,6 +64,7 @@ function Login() {
                 Log in to Portal
               </h2>
               <div className="auth-form-container text-start">
+                <p>{errMsg}</p>
                 <form className="auth-form login-form" onSubmit={handleSubmit}>
                   <div className="email mb-3">
                     <label className="sr-only" htmlFor="signin-email">

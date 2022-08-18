@@ -59,7 +59,7 @@ function AddAdmin() {
   return (
     <div>
       <Header />
-      <h2>Add Admin</h2>
+      <h2 style={{ marginTop: 24 }}>Add Admin</h2>
       <div
         style={{
           borderStyle: "solid",
@@ -67,7 +67,7 @@ function AddAdmin() {
           width: 500,
           display: "flex",
           flexDirection: "column",
-          marginTop: 20,
+          marginTop: 40,
           borderRadius: 20,
           height: 500,
           paddingTop: "10%",
