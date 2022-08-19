@@ -454,7 +454,12 @@ function HousePost() {
                       <button
                         style={{ backgroundColor: "green" }}
                         onClick={() => {
-                          approveMutation.mutate();
+                          const bool = confirm(
+                            "Are you sure to approve this place?"
+                          );
+                          if (bool) {
+                            approveMutation.mutate();
+                          }
                         }}
                       >
                         Approve

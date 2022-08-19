@@ -14,7 +14,7 @@ function Login() {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      const response = await fetch(`${BASEURI}/auth/adminlogin`, {
+      const response = await fetch(`${BASEURI}/auth/login`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",

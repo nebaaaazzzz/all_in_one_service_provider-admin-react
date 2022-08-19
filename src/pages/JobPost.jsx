@@ -271,7 +271,12 @@ function data() {
                       <button
                         style={{ backgroundColor: "green" }}
                         onClick={() => {
-                          approveMutation.mutate();
+                          const bool = confirm(
+                            "Are you sure you want to approve this job?"
+                          );
+                          if (bool) {
+                            approveMutation.mutate();
+                          }
                         }}
                       >
                         Approve
